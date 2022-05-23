@@ -3,6 +3,17 @@ In this repository, I followed a Django full tutorial from the official site. He
 
 This README provides the log what I've done with this repository. This repository also the result of my study in that tutorial.
 
+**Table of Content**
+- [Initial Steps](#initial-steps)
+  - [1. Create and run a Virtual Environment into your terminal](#1-create-and-run-a-virtual-environment-into-your-terminal)
+  - [2. Install packages](#2-install-packages)
+  - [3. Create a Django Project](#3-create-a-django-project)
+  - [4. Create an App inside the project](#4-create-an-app-inside-the-project)
+  - [5. Migrate your database for the first time](#5-migrate-your-database-for-the-first-time)
+  - [6. Create an initial user](#6-create-an-initial-user)
+- [Models and Migrations](#models-and-migrations)
+- [Serializer Class](#serializer-class)
+
 ## Initial Steps
 The initial steps is the same as my [quickstart repository](https://github.com/ryumada/python-djangorestframework-quickstart).
 
@@ -70,3 +81,8 @@ We use `makemigrations` and `migrate`. We will run this command to make the migr
 python manage.py makemigrations snippets # this will create a migration file (snippets/migrations/0001_initial.py), the migration file generated from snippets/models.py
 python manage.py migrate snippets # this will run the migration file
 ```
+
+## Serializer Class
+The documentation says that the **Serializer** is like **Djago form** class. It creates a structure of data, provides a common data validation, and controls how the serializer should be displayed (such as `{'base_template': textarea.html}`).
+
+> The path for a serializer I create `snippets/serializers.py`
