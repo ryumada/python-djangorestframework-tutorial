@@ -13,6 +13,7 @@ This README provides the log what I've done with this repository. This repositor
   - [6. Create an initial user](#6-create-an-initial-user)
 - [Models and Migrations](#models-and-migrations)
 - [Serializer Class](#serializer-class)
+- [Model Serializer](#model-serializer)
 
 ## Initial Steps
 The initial steps is the same as my [quickstart repository](https://github.com/ryumada/python-djangorestframework-quickstart).
@@ -86,3 +87,8 @@ python manage.py migrate snippets # this will run the migration file
 The documentation says that the **Serializer** is like **Djago form** class. It creates a structure of data, provides a common data validation, and controls how the serializer should be displayed (such as `{'base_template': textarea.html}`).
 
 > The path for a serializer I create `snippets/serializers.py`
+
+## Model Serializer
+`ModelSerializer` creates a shortcut to create serializer from a model. It set:
+- An automatically determined set of fields.
+- Simple default implementation for the `create()` and `update()` methods.
