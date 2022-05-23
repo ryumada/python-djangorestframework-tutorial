@@ -61,3 +61,12 @@ python3 manage.py migrate
 ```bash
 python3 manage.py createsuperuser --email admin@example.com --username admin
 ```
+
+## Models and Migrations
+Create a model. This model is used to create a table in the database. The model I created is in: `snippets/models.py`
+
+We use `makemigrations` and `migrate`. We will run this command to make the migration and migrate it:
+```bash
+python manage.py makemigrations snippets # this will create a migration file (snippets/migrations/0001_initial.py), the migration file generated from snippets/models.py
+python manage.py migrate snippets # this will run the migration file
+```
