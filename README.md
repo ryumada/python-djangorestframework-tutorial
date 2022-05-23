@@ -14,6 +14,7 @@ This README provides the log what I've done with this repository. This repositor
 - [Models and Migrations](#models-and-migrations)
 - [Serializer Class](#serializer-class)
 - [Model Serializer](#model-serializer)
+- [Regular Djago Views using our Serializer](#regular-djago-views-using-our-serializer)
 
 ## Initial Steps
 The initial steps is the same as my [quickstart repository](https://github.com/ryumada/python-djangorestframework-quickstart).
@@ -92,3 +93,9 @@ The documentation says that the **Serializer** is like **Djago form** class. It 
 `ModelSerializer` creates a shortcut to create serializer from a model. It set:
 - An automatically determined set of fields.
 - Simple default implementation for the `create()` and `update()` methods.
+
+## Regular Djago Views using our Serializer
+This will create API interface where we can access it in curl or web browser.
+- I create a snippet views in `snippets/views.py`
+- wire the views (routing) by creating `snippets/urls.py`
+- wire up the root urlcof (routing) in the `tutorial/urls.py`, to include our snippet app's URLs.
