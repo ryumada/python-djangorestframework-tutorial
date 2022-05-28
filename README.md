@@ -85,7 +85,7 @@ python manage.py migrate snippets # this will run the migration file
 ```
 
 ## Serializer Class
-The documentation says that the **Serializer** is like **Djago form** class. It creates a structure of data, provides a common data validation, and controls how the serializer should be displayed (such as `{'base_template': textarea.html}`).
+The documentation says that the **Serializer** is like **Django form** class. It creates a structure of data, provides a common data validation, and controls how the serializer should be displayed (such as `{'base_template': textarea.html}`).
 
 > The path for a serializer I create `snippets/serializers.py`
 
@@ -99,3 +99,5 @@ This will create API interface where we can access it in curl or web browser.
 - I create a snippet views in `snippets/views.py`
 - wire the views (routing) by creating `snippets/urls.py`
 - wire up the root urlcof (routing) in the `tutorial/urls.py`, to include our snippet app's URLs.
+
+> PS: See commit changes to learn more about this repository

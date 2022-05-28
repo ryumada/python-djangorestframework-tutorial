@@ -1,5 +1,7 @@
 from django.db import models
-from pygments.lexers import get_all_lexers
+from pygments import highlight
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import get_all_lexers, get_lexer_by_name
 from pygments.styles import get_all_styles
 
 from tutorial.settings import LANGUAGE_CODE
@@ -14,7 +16,22 @@ class Snippet(models.Model):
   code = models.TextField()
   linenos = models.BooleanField(default=False)
   language = models.CharField(choices=LANGUAGE_CHOICES, default='python', max_length=100)
+  owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
   style = models.CharField(choices=STYLE_CHOICES, default='friendly', max_length=100)
+  highlighted = models.TextField()
   
   class Meta:
     ordering = ['created']
+    
+  def save(self, *args, **kwargs):
+    """
+    use the "pygments" library to create a highlighted HTML
+    representation of the code snippet.
+    """
+    lexer = get_lexer_by_name(self.language)
+    lineos = 'table' if self.lineos else False
+    options = {'title': self.title} if self.title else {}
+    formatter = HtmlFormatter(style=self.style, lineos=lineos,
+                              full=True, **options)
+    self.highlighted = highlight(self.code, lexer, formatter)
+    super().save(*args, **kwargs)
