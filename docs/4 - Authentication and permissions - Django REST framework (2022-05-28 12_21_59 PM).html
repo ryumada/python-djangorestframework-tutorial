@@ -1,0 +1,445 @@
+<!DOCTYPE html> <html lang=en><!--
+ Page saved with SingleFile 
+ url: https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/ 
+ saved date: Sat May 28 2022 12:21:59 GMT+0700 (Western Indonesia Time)
+--><meta charset=utf-8>
+<title>4 - Authentication and permissions - Django REST framework</title>
+<link rel=canonical href=https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<meta name=description content="Django, API, REST, 4 - Authentication and permissions">
+<meta name=author content="Tom Christie">
+<style>.com{color:#93a1a1}.lit{color:#195f91}.pun{color:#93a1a1}.str{color:#D14}.kwd{color:#1e347b}.typ{color:teal}.pln{color:#48484c}footer{display:block}html{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}a:focus{outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}a:hover,a:active{outline:0}img{height:auto;max-width:100%;vertical-align:middle;border:0;-ms-interpolation-mode:bicubic}body{font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;color:#333333;background-color:#ffffff}a{text-decoration:none}a:hover{color:#005580;text-decoration:underline}[class*="span"]{float:left;min-height:1px;margin-left:20px}.span12{width:940px}.row-fluid{width:100%}.row-fluid:before,.row-fluid:after{display:table;line-height:0;content:""}.row-fluid:after{clear:both}.row-fluid [class*="span"]{display:block;float:left;min-height:30px;margin-left:2.127659574468085%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.row-fluid [class*="span"]:first-child{margin-left:0}.row-fluid .span9{width:74.46808510638297%}.row-fluid .span3{width:23.404255319148934%}.container-fluid{padding-right:20px;padding-left:20px}.container-fluid:before,.container-fluid:after{display:table;line-height:0;content:""}.container-fluid:after{clear:both}p{margin:0 0 10px}strong{font-weight:bold}em{font-style:italic}h1,h2{margin:10px 0;font-family:inherit;color:inherit;text-rendering:optimizelegibility}h1{font-size:36px;line-height:40px}h2{font-size:30px;line-height:40px}ul{padding:0;margin:0 0 10px 25px}li{line-height:20px}hr{margin:20px 0;border:0;border-bottom:1px solid #ffffff}code,pre{color:#333333;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}code{padding:2px 4px;color:#d14;background-color:#f7f7f9;border:1px solid #e1e1e8}pre{display:block;margin:0 0 10px;line-height:20px;word-break:break-all;-webkit-border-radius:4px;-moz-border-radius:4px}pre.prettyprint{margin-bottom:20px}pre code{padding:0;color:inherit;background-color:transparent;border:0}[class^="icon-"]{display:inline-block;width:14px;height:14px;line-height:14px;vertical-align:text-top;background-repeat:no-repeat}.icon-white{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdUAAACfCAMAAACY07N7AAAC2VBMVEX///8AAAAAAAD5+fn///8AAAD////9/f1tbW0AAAD///////////8AAAAAAAD////w8PD+/v729vYAAAD8/PwAAAAAAAD////////a2toAAADCwsL09PT////////09PT39/f///8AAAAAAACzs7P9/f0AAADi4uKwsLD////////7+/vn5+f+/v7///8AAADt7e0AAADPz88AAAD9/f329vbt7e37+/vn5+f6+vrh4eGSkpL+/v7+/v7BwcGYmJh0dHTh4eHQ0NAAAADz8/O7u7uhoaGAgID9/f3U1NRiYmL////V1dX4+Pjc3Nz6+vr7+/vp6en7+/v9/f39/f3R0dHy8vL8/Pz4+Pjr6+v8/Py2trbGxsbl5eXu7u719fX9/f1lZWVnZ2fw8PC2trbg4OD39/f6+vrp6enl5eX6+vr4+PjLy8v///+EhITx8fF4eHj39/fd3d35+fnIyMjS0tLs7Oz6+vre3t7i4uLm5ubz8/Obm5uoqKilpaXc3Nzu7u7////x8fHJycnw8PD////////e3t7Gxsa8vLzr6+vW1tbQ0NDi4uL5+fn09PTi4uLs7Oz19fW0tLT////9/f37+/v8/Pz6+vrm5uYAAADk5OT8/Pz39/ewsLCZmZn9/f3s7Oz8/PzBwcHp6en////a2trw8PDw8PD19fXx8fH+/v74+Pj+/v6Ojo7i4uL7+/v5+fnc3Nz////y8vL6+vqfn5/t7e339/f29vbo6Ojz8/P6+vr19fX19fWmpqbLy8v6+vr4+PjT09Pr6+v6+vrr6+uqqqrz8/Pt7e2ioqLPz8/a2trW1taioqLr6+vi4uL5+flVVVXNzc3////W1tbj4+Ph4eHq6ur8/Pz////29vb7+/vz8/P09PTMzMz////////5+fn19fX////y8vL9/f0AAADZ2dn8/Pz7+/v8/Pzp6em/v7/7+/vq6urp6en+/v7////4ck/mAAAA8nRSTlMAGgDUzwIP8SMQ759fCgUvqfDGFeIYA78fbxNTt98/hsV/BhdD4Q1rRI+vwo3ATxJTD18IoKWasozTETbQ4D40IX5hC6dAMR7RXydvEsRuotKLkZCATYahkzOxQlFqmbZwJiUhFWy1wyJYcXI7gB2XIEFbgjxg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)}.icon-search{background-position:-48px 0}.icon-arrow-left{background-position:-240px -96px}.icon-arrow-right{background-position:-264px -96px}.dropdown{position:relative}.dropdown-toggle:active,.open .dropdown-toggle{outline:0}.caret{display:inline-block;width:0;height:0;vertical-align:top;border-top:4px solid #000000;border-right:4px solid transparent;border-left:4px solid transparent;content:""}.dropdown .caret{margin-left:2px}.well{min-height:20px;padding:19px;background-color:#f5f5f5;border:1px solid #e3e3e3;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);-moz-box-shadow:inset 0 1px 1px rgba(0,0,0,0.05);box-shadow:inset 0 1px 1px rgba(0,0,0,0.05)}.collapse{position:relative;overflow:hidden;-webkit-transition:height 0.35s ease;-moz-transition:height 0.35s ease;-o-transition:height 0.35s ease;transition:height 0.35s ease}.btn{display:inline-block;margin-bottom:0;text-align:center;vertical-align:middle;cursor:pointer;background-image:-webkit-gradient(linear,0 0,0 100%,from(#ffffff),to(#e6e6e6));background-image:-webkit-linear-gradient(top,#ffffff,#e6e6e6);background-image:-o-linear-gradient(top,#ffffff,#e6e6e6);background-image:-moz-linear-gradient(top,#ffffff,#e6e6e6);border:1px solid #bbbbbb;border-bottom-color:#a2a2a2;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px;-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);-moz-box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);box-shadow:inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05)}.btn:hover,.btn:active,.btn.active,.btn.disabled,.btn[disabled]{color:#333333;background-color:#e6e6e6;*background-color:#d9d9d9}.btn:active,.btn.active{background-color:#cccccc \9}.btn:first-child{*margin-left:0}.btn:hover{color:#333333;text-decoration:none;background-color:#e6e6e6;*background-color:#d9d9d9;background-position:0 -15px;-webkit-transition:background-position 0.1s linear;-moz-transition:background-position 0.1s linear;-o-transition:background-position 0.1s linear;transition:background-position 0.1s linear}.btn:focus{outline:thin dotted #333;outline:5px auto -webkit-focus-ring-color;outline-offset:-2px}.btn.active,.btn:active{background-color:#e6e6e6;background-color:#d9d9d9 \9;background-image:none;outline:0;-webkit-box-shadow:inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);-moz-box-shadow:inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05);box-shadow:inset 0 2px 4px rgba(0,0,0,0.15),0 1px 2px rgba(0,0,0,0.05)}.btn-small{padding:3px 9px;font-size:12px;line-height:18px}.btn-small [class^="icon-"]{margin-top:0}.btn-primary{color:#ffffff;text-shadow:0 -1px 0 rgba(0,0,0,0.25);background-color:#006dcc;background-image:-webkit-gradient(linear,0 0,0 100%,from(#0088cc),to(#0044cc));background-image:-webkit-linear-gradient(top,#0088cc,#0044cc);background-image:-o-linear-gradient(top,#0088cc,#0044cc);background-image:linear-gradient(to bottom,#0088cc,#0044cc);background-image:-moz-linear-gradient(top,#0088cc,#0044cc);background-repeat:repeat-x;border-color:rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25)}.btn-primary:hover,.btn-primary:active,.btn-primary.active,.btn-primary.disabled,.btn-primary[disabled]{color:#ffffff;background-color:#0044cc;*background-color:#003bb3}.btn-primary:active,.btn-primary.active{background-color:#003399 \9}.btn-inverse{color:#ffffff;text-shadow:0 -1px 0 rgba(0,0,0,0.25);background-color:#363636;background-image:-webkit-gradient(linear,0 0,0 100%,from(#444444),to(#222222));background-image:-webkit-linear-gradient(top,#444444,#222222);background-image:-o-linear-gradient(top,#444444,#222222);background-image:linear-gradient(to bottom,#444444,#222222);background-image:-moz-linear-gradient(top,#444444,#222222);background-repeat:repeat-x;border-color:rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25)}.btn-inverse:hover,.btn-inverse:active,.btn-inverse.active,.btn-inverse.disabled,.btn-inverse[disabled]{color:#ffffff;background-color:#222222;*background-color:#151515}.btn-inverse:active,.btn-inverse.active{background-color:#080808 \9}.nav{margin-bottom:20px;margin-left:0;list-style:none}.nav>li>a{display:block}.nav>li>a:hover{text-decoration:none;background-color:#eeeeee}.nav-list{padding-right:15px;padding-left:15px;margin-bottom:0}.nav-list>li>a{margin-right:-15px;margin-left:-15px;text-shadow:0 1px 0 rgba(255,255,255,0.5)}.nav .dropdown-toggle:hover .caret{border-top-color:#005580;border-bottom-color:#005580}.nav>.dropdown.active>a:hover{cursor:pointer}.navbar{overflow:visible}.navbar-inner{min-height:40px;background-image:-moz-linear-gradient(top,#ffffff,#f2f2f2);background-image:-webkit-gradient(linear,0 0,0 100%,from(#ffffff),to(#f2f2f2));background-image:-webkit-linear-gradient(top,#ffffff,#f2f2f2);background-image:-o-linear-gradient(top,#ffffff,#f2f2f2);-webkit-border-radius:4px;-moz-border-radius:4px;-webkit-box-shadow:0 1px 4px rgba(0,0,0,0.065);-moz-box-shadow:0 1px 4px rgba(0,0,0,0.065)}.navbar-inner:before,.navbar-inner:after{display:table;line-height:0;content:""}.navbar-inner:after{clear:both}.nav-collapse.collapse{height:auto}.navbar .brand{display:block;float:left;padding:10px 20px 10px;margin-left:-20px;font-size:20px;font-weight:200}.navbar .brand:hover{text-decoration:none}.navbar .btn{margin-top:5px}.navbar-fixed-top{position:fixed;right:0;left:0;z-index:1030;margin-bottom:0}.navbar-fixed-top .navbar-inner{border-width:0 0 1px}.navbar-fixed-top .navbar-inner{padding-right:0;padding-left:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0}.navbar-fixed-top{top:0}.navbar-fixed-top .navbar-inner{-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);-moz-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.1),0 1px 10px rgba(0,0,0,0.1)}.navbar .nav{position:relative;left:0;display:block;float:left;margin:0 10px 0 0}.navbar .nav>li{float:left}.navbar .nav>li>a{float:none;padding:10px 15px 10px;text-decoration:none}.navbar .nav .dropdown-toggle .caret{margin-top:8px}.navbar .nav>li>a:focus,.navbar .nav>li>a:hover{color:#333333;text-decoration:none;background-color:transparent}.navbar .nav>.active>a,.navbar .nav>.active>a:hover,.navbar .nav>.active>a:focus{color:#555555;text-decoration:none;background-color:#e5e5e5;-webkit-box-shadow:inset 0 3px 8px rgba(0,0,0,0.125);-moz-box-shadow:inset 0 3px 8px rgba(0,0,0,0.125);box-shadow:inset 0 3px 8px rgba(0,0,0,0.125)}.navbar-inverse{color:#999999}.navbar-inverse .navbar-inner{background-color:#1b1b1b;background-image:-moz-linear-gradient(top,#222222,#111111);background-image:-webkit-gradient(linear,0 0,0 100%,from(#222222),to(#111111));background-image:-webkit-linear-gradient(top,#222222,#111111);background-image:-o-linear-gradient(top,#222222,#111111);background-image:linear-gradient(to bottom,#222222,#111111);background-repeat:repeat-x;border-color:#252525}.navbar-inverse .brand,.navbar-inverse .nav>li>a{text-shadow:0 -1px 0 rgba(0,0,0,0.25)}.navbar-inverse .brand:hover,.navbar-inverse .nav>li>a:hover{color:#ffffff}.navbar-inverse .nav>li>a:focus,.navbar-inverse .nav>li>a:hover{color:#ffffff;background-color:transparent}.navbar-inverse .nav .active>a,.navbar-inverse .nav .active>a:hover,.navbar-inverse .nav .active>a:focus{color:#ffffff;background-color:#111111}.navbar-inverse .nav li.dropdown.active>.dropdown-toggle{color:#ffffff;background-color:#111111}.navbar-inverse .nav li.dropdown>.dropdown-toggle .caret{border-top-color:#999999;border-bottom-color:#999999}.navbar-inverse .nav li.dropdown.active>.dropdown-toggle .caret{border-top-color:#ffffff;border-bottom-color:#ffffff}@-webkit-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-moz-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-ms-keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@-o-keyframes progress-bar-stripes{from{background-position:0 0}to{background-position:40px 0}}@keyframes progress-bar-stripes{from{background-position:40px 0}to{background-position:0 0}}@media (min-width:1200px){[class*="span"]{float:left;min-height:1px;margin-left:30px}.span12{width:1170px}.row-fluid{width:100%}.row-fluid:before,.row-fluid:after{display:table;line-height:0;content:""}.row-fluid:after{clear:both}.row-fluid [class*="span"]{display:block;float:left;min-height:30px;margin-left:2.564102564102564%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.row-fluid [class*="span"]:first-child{margin-left:0}.row-fluid .span9{width:74.35897435897436%}.row-fluid .span3{width:23.076923076923077%}}@media (min-width:768px) and (max-width:979px){[class*="span"]{float:left;min-height:1px;margin-left:20px}.span12{width:724px}.row-fluid{width:100%}.row-fluid:before,.row-fluid:after{display:table;line-height:0;content:""}.row-fluid:after{clear:both}.row-fluid [class*="span"]{display:block;float:left;min-height:30px;margin-left:2.7624309392265194%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.row-fluid [class*="span"]:first-child{margin-left:0}.row-fluid .span9{width:74.30939226519337%}.row-fluid .span3{width:22.92817679558011%}}@media (max-width:767px){body{padding-right:20px;padding-left:20px}.navbar-fixed-top{margin-right:-20px;margin-left:-20px}.container-fluid{padding:0}.row-fluid{width:100%}[class*="span"],.row-fluid [class*="span"]{display:block;float:none;width:100%;margin-left:0;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.span12{width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}}@media (max-width:480px){.nav-collapse{-webkit-transform:translate3d(0,0,0)}}@media (max-width:979px){body{padding-top:0}.navbar-fixed-top{position:static}.navbar-fixed-top{margin-bottom:20px}.navbar-fixed-top .navbar-inner{padding:5px}.navbar .brand{padding-right:10px;padding-left:10px;margin:0 0 0 -5px}.nav-collapse{clear:both}.nav-collapse .nav{float:none;margin:0 0 10px}.nav-collapse .nav>li{float:none}.nav-collapse .nav>li>a{margin-bottom:2px}.nav-collapse .nav>li>a{padding:9px 15px;font-weight:bold;color:#777777;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}.nav-collapse .nav>li>a:hover,.nav-collapse .dropdown-menu a:hover{background-color:#f2f2f2}.navbar-inverse .nav-collapse .nav>li>a:hover,.navbar-inverse .nav-collapse .dropdown-menu a:hover{background-color:#111111}.nav-collapse.collapse{height:0;overflow:hidden}}@media (min-width:980px){.nav-collapse.collapse{height:auto!important;overflow:visible!important}}@media (max-width:480px){.repo-link{display:none}}.repo-link{float:right;margin-right:10px}body hr{border-top:1px dotted #A30000}#table-of-contents{overflow:hidden;margin:0 0 20px 0}pre{overflow:auto;word-wrap:normal;white-space:pre}code,pre{font-family:Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;font-size:13px}@media (max-width:979px){.navbar .brand{margin-left:0;padding-left:0}.navbar-inner .container-fluid{padding-left:15px}}.nav-list li.main{font-weight:bold}.nav-list a{overflow:hidden}.nav-list>li>a{padding:2px 15px 3px}@media (max-width:767px){#table-of-contents{position:static}}@media (min-width:768px){#main-content{padding-left:1em}}html{width:100%;background:none}body,.navbar .navbar-inner .container-fluid{max-width:1150px;margin:0 auto}body::before{content:' ';position:fixed;width:100%;height:100%;top:0;left:0;background-color:#f8f8f8;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFoAAAEyCAYAAAB6eMeBAAAACXBIWXMAAAsTAAALEwEAmpwYAAABbmlUWHRYTUw6Y29tLmFkb2JlLnhtcAAAAAAAPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iWE1QIENvcmUgNC40LjAiPgogICA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogICAgICA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIgogICAgICAgICAgICB4bWxuczpkYz0iaHR0cDovL3B1cmwub3JnL2RjL2VsZW1lbnRzLzEuMS8iPgogICAgICAgICA8ZGM6c3ViamVjdD4KICAgICAgICAgICAgPHJkZjpCYWcvPgogICAgICAgICA8L2RjOnN1YmplY3Q+CiAgICAgIDwvcmRmOkRlc2NyaXB0aW9uPgogICA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgrlPw1BAAAD6klEQVR4nO3dwXIbVRBA0R4DgaLg/z8UNkDCY5FSwcKJjDW+PA/nrF0d5Wb8LE1b0TEzP8/M78Ob+nZmZq3126ODjuP43pwve3p0AC8jdEToiNARoSNCR4SOCB0ROiJ0ROiI0BGhI0JHhI4IHTnGhiVhwxLNcXREhI4IHRE6InRE6IjQEaEjQkeEjggdEToidEToiNARoSO3DQtv7LZh+eXRQbttNHab4+iICB0ROiJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQke8hyXiPSzRHEdHROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjggdETpiwxKxYYnmODoiQkeEjggdEToidEToiNARoSNCR4SOCB0ROiJ0ROiI0BEblogNSzTH0REROiJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjtiwRGxYojmOjojQEaEjQkeEjggdEToidEToiNARoSNCR4SOCB0ROiJ0xCfdR3zSfTTH0REROiJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjngPS8R7WKI5jo6I0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjggdEToidMSGJWLDEs1xdESEjggdEToidEToiNARoSNCR4SOCB0ROiJ0ROiI0BGhIzYsERuWaI6jIyJ0ROiI0BGhI0JHhI4IHRE6InRE6IjQEaEjQkeEjggdsWGJ2LBEc658dKz/+gH809Ns9oDmvMdznDTnFK7oyJVDb+XM0FtdQSc65e/lio4IHRE6InRE6IjQEaEjQkeEjggdETpyzMxPL/i6q97HeAvP3p69bVh+fXj6cXxYaz28ErvqHEdHZMcNyyW5oiNCR4SOCB3ZMfRZP5y3+iG/Y+hLEjri1w3u8+sG74nQEaEjQkeEjrh7Fzlm5seZ+TiCv6nbhuWMTcR3a60/zHnejme0ex28ntARoSNC37fdTaWtfvjsxhUd8cow4oqOCB3ZMbRXhrye0BGhI0Lf55Xhe3LMzA/zecPyGv/nuP/qvxK6bVheG/rvP/U4vllrfTLnec7oiNARoSPu3kVc0ZErh97qO3XH0FsFOsuOoS9J6IjQEaEjnkff5zbpe+LoiAgdETpyzMyHmXnpjW3n8Jd9deNy27CcsYl4Wmv9ac7zrnx0bPXdt+Pz6N0ezymufEVvReiI0BGhI0JHhL7P3bv3ZMfn0Zfk6IgIHRE6InRE6IjQkWM+3/y/d2PbU8CX++rnsJyxiTjWWg//g1xgzrNf6wVL5LJn9BlX85m2C71boLNsF/qqhI4IHRE6InRE6IjQEaEjQkeEjggdEfqOs+69CB35C5POmCO+HvwnAAAAAElFTkSuQmCC) repeat-x;will-change:transform;z-index:-1}#main-content h1:first-of-type{margin-top:0}#main-content h1,#main-content h2{font-weight:300;margin-top:20px}.navbar .navbar-inner{background:#2C2C2C;color:white;border:none;border-top:5px solid #A30000}.navbar .navbar-inner .nav li,.navbar .navbar-inner .nav li a,.navbar .navbar-inner .brand{color:white}.nav-list>.active>a,.navbar .navbar-inner .nav li a:hover{background:#212121;color:white}body a{color:#A30000}body a:hover{color:#c20000}@media (min-width:767px){.sidebar-nav-fixed{position:fixed;width:19%;max-width:240px}.navbar{position:fixed}.navbar .navbar-inner .container-fluid{max-width:1110px}}html,body{height:100%}.wrapper{min-height:100%;height:auto!important;height:100%;margin:0 auto -60px}.body-content{padding-top:70px;padding-bottom:70px}@media (max-width:979px){.navbar-fixed-top .navbar-inner{padding:0px}}@media (max-width:767px){.body-content{padding-top:0px}}@media (min-width:768px){footer.span12{width:95%}}footer{height:60px}footer p{text-align:center;color:gray;border-top:1px solid #DDD;padding-top:10px}footer a{color:gray;font-weight:bold}footer a:hover{color:gray}.btn-inverse{background-image:-webkit-gradient(linear,0 0,0 100%,from(#606060),to(#404040))!important;background-image:-webkit-linear-gradient(top,#606060,#404040)!important}.modal-open .modal,.btn:focus{outline:none}@media (max-width:650px){.repo-link.btn-inverse{display:none}}.side-nav{overflow-y:scroll}.toclink{color:#333}#sidebarInclude img{margin-bottom:10px}#sidebarInclude a.promo{color:black}@media (max-width:767px){div.promo{display:none}}</style>
+<link href=data:image/vnd.microsoft.icon;base64,AAABAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACAAAAAAAgAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAAAowAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAgIAAAAAAAAAAAAAAAAAAAAAAAACAgICAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgICAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgICAgICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICAgICAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////+B///+AH///AA///wAP//4AB//+AAf//gAH//4AB//+AAf//wAP//8AD///gB///8A////w///////////////w////wD///4Af//8AD///AA///gAH//4AB//+AAf//gAH//4AB///AA///wAP//+AH///4H/////// rel=icon type=image/x-icon><style>.sf-hidden{display:none!important}</style><meta http-equiv=content-security-policy content="default-src 'none'; font-src 'self' data:; img-src 'self' data:; style-src 'unsafe-inline'; media-src 'self' data:; script-src 'unsafe-inline' data:;"><style>img[src="data:,"],source[src="data:,"]{display:none!important}</style></head>
+<body class=-page>
+ <div class=wrapper>
+ <div class="navbar navbar-inverse navbar-fixed-top">
+ <div class=navbar-inner>
+ <div class=container-fluid>
+ <a class="repo-link btn btn-primary btn-small" href=https://github.com/encode/django-rest-framework/tree/master>GitHub</a>
+ <a class="repo-link btn btn-inverse btn-small" rel=next href=https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/>
+ Next <i class="icon-arrow-right icon-white"></i>
+ </a>
+ <a class="repo-link btn btn-inverse btn-small" rel=prev href=https://www.django-rest-framework.org/tutorial/3-class-based-views/>
+ <i class="icon-arrow-left icon-white"></i> Previous
+ </a>
+ <a id=search_modal_show class="repo-link btn btn-inverse btn-small" href=#mkdocs_search_modal data-toggle=modal data-target=#mkdocs_search_modal><i class="icon-search icon-white"></i> Search</a>
+ <a class="btn btn-navbar sf-hidden" data-toggle=collapse data-target=.nav-collapse>
+ 
+ 
+ 
+ </a>
+ <a class=brand href=https://www.django-rest-framework.org/>Django REST framework</a>
+ <div class="nav-collapse collapse">
+ 
+ 
+ <ul class="nav navbar-nav">
+ 
+ <li>
+ <a href=https://www.django-rest-framework.org/>Home</a>
+ </li>
+ 
+ <li class="dropdown active">
+ <a href=# class=dropdown-toggle data-toggle=dropdown>Tutorial <b class=caret></b></a>
+ <ul class="dropdown-menu sf-hidden" style=max-height:527px>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </ul>
+ </li>
+ 
+ <li class=dropdown>
+ <a href=# class=dropdown-toggle data-toggle=dropdown>API Guide <b class=caret></b></a>
+ <ul class="dropdown-menu sf-hidden" style=max-height:527px>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </ul>
+ </li>
+ 
+ <li class=dropdown>
+ <a href=# class=dropdown-toggle data-toggle=dropdown>Topics <b class=caret></b></a>
+ <ul class="dropdown-menu sf-hidden" style=max-height:527px>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </ul>
+ </li>
+ 
+ <li class=dropdown>
+ <a href=# class=dropdown-toggle data-toggle=dropdown>Community <b class=caret></b></a>
+ <ul class="dropdown-menu sf-hidden" style=max-height:527px>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ </ul>
+ </li>
+ 
+ </ul>
+ 
+ </div>
+ 
+ </div>
+ </div>
+ </div>
+ <div class=body-content>
+ <div class=container-fluid>
+ 
+ <div id=mkdocs_search_modal class="modal hide fade sf-hidden" tabindex=-1 role=dialog aria-labelledby=myModalLabel aria-hidden=true>
+ 
+ 
+ 
+ </div>
+ <div class=row-fluid>
+ <div class=span3>
+ <div id=table-of-contents>
+ <ul class="nav nav-list side-nav well sidebar-nav-fixed" style=max-height:527px>
+ 
+ 
+ <li class=main>
+ <a href=#tutorial-4-authentication-permissions>Tutorial 4: Authentication &amp; Permissions</a>
+ </li>
+ 
+ <li>
+ <a href=#adding-information-to-our-model>Adding information to our model</a>
+ </li>
+ 
+ <li>
+ <a href=#adding-endpoints-for-our-user-models>Adding endpoints for our User models</a>
+ </li>
+ 
+ <li>
+ <a href=#associating-snippets-with-users>Associating Snippets with Users</a>
+ </li>
+ 
+ <li>
+ <a href=#updating-our-serializer>Updating our serializer</a>
+ </li>
+ 
+ <li>
+ <a href=#adding-required-permissions-to-views>Adding required permissions to views</a>
+ </li>
+ 
+ <li>
+ <a href=#adding-login-to-the-browsable-api>Adding login to the Browsable API</a>
+ </li>
+ 
+ <li>
+ <a href=#object-level-permissions>Object level permissions</a>
+ </li>
+ 
+ <li>
+ <a href=#authenticating-with-the-api>Authenticating with the API</a>
+ </li>
+ 
+ <li>
+ <a href=#summary>Summary</a>
+ </li>
+ 
+ 
+ <div class=promo>
+ <hr>
+ <div id=sidebarInclude><a href=https://www.emburse.com/><img src="data:image/png;base64,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" width=130px></a><p><a class=promo href=https://www.emburse.com/>Empowering businesses with trusted expense management and AP automation solutions so they can focus on what matters most.</a><p><a href=https://fund.django-rest-framework.org/topics/funding/>Fund Django REST framework</a></p></div>
+ </div></ul>
+ </div>
+ </div>
+ <div id=main-content class=span9>
+ 
+ 
+ <h1 id=tutorial-4-authentication-permissions><a class=toclink href=#tutorial-4-authentication-permissions>Tutorial 4: Authentication &amp; Permissions</a></h1>
+<p>Currently our API doesn't have any restrictions on who can edit or delete code snippets. We'd like to have some more advanced behavior in order to make sure that:</p>
+<ul>
+<li>Code snippets are always associated with a creator.</li>
+<li>Only authenticated users may create snippets.</li>
+<li>Only the creator of a snippet may update or delete it.</li>
+<li>Unauthenticated requests should have full read-only access.</li>
+</ul>
+<h2 id=adding-information-to-our-model><a class=toclink href=#adding-information-to-our-model>Adding information to our model</a></h2>
+<p>We're going to make a couple of changes to our <code>Snippet</code> model class.
+First, let's add a couple of fields. One of those fields will be used to represent the user who created the code snippet. The other field will be used to store the highlighted HTML representation of the code.</p>
+<p>Add the following two fields to the <code>Snippet</code> model in <code>models.py</code>.</p>
+<pre class="prettyprint well"><code><span class=pln>owner </span><span class=pun>=</span><span class=pln> models</span><span class=pun>.</span><span class=typ>ForeignKey</span><span class=pun>(</span><span class=str>'auth.User'</span><span class=pun>,</span><span class=pln> related_name</span><span class=pun>=</span><span class=str>'snippets'</span><span class=pun>,</span><span class=pln> on_delete</span><span class=pun>=</span><span class=pln>models</span><span class=pun>.</span><span class=pln>CASCADE</span><span class=pun>)</span><span class=pln>
+highlighted </span><span class=pun>=</span><span class=pln> models</span><span class=pun>.</span><span class=typ>TextField</span><span class=pun>()</span></code></pre>
+<p>We'd also need to make sure that when the model is saved, that we populate the highlighted field, using the <code>pygments</code> code highlighting library.</p>
+<p>We'll need some extra imports:</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> pygments</span><span class=pun>.</span><span class=pln>lexers </span><span class=kwd>import</span><span class=pln> get_lexer_by_name
+</span><span class=kwd>from</span><span class=pln> pygments</span><span class=pun>.</span><span class=pln>formatters</span><span class=pun>.</span><span class=pln>html </span><span class=kwd>import</span><span class=pln> </span><span class=typ>HtmlFormatter</span><span class=pln>
+</span><span class=kwd>from</span><span class=pln> pygments </span><span class=kwd>import</span><span class=pln> highlight</span></code></pre>
+<p>And now we can add a <code>.save()</code> method to our model class:</p>
+<pre class="prettyprint well"><code><span class=kwd>def</span><span class=pln> save</span><span class=pun>(</span><span class=kwd>self</span><span class=pun>,</span><span class=pln> </span><span class=pun>*</span><span class=pln>args</span><span class=pun>,</span><span class=pln> </span><span class=pun>**</span><span class=pln>kwargs</span><span class=pun>):</span><span class=pln>
+    </span><span class=str>"""
+    Use the `pygments` library to create a highlighted HTML
+    representation of the code snippet.
+    """</span><span class=pln>
+    lexer </span><span class=pun>=</span><span class=pln> get_lexer_by_name</span><span class=pun>(</span><span class=kwd>self</span><span class=pun>.</span><span class=pln>language</span><span class=pun>)</span><span class=pln>
+    linenos </span><span class=pun>=</span><span class=pln> </span><span class=str>'table'</span><span class=pln> </span><span class=kwd>if</span><span class=pln> </span><span class=kwd>self</span><span class=pun>.</span><span class=pln>linenos </span><span class=kwd>else</span><span class=pln> </span><span class=kwd>False</span><span class=pln>
+    options </span><span class=pun>=</span><span class=pln> </span><span class=pun>{</span><span class=str>'title'</span><span class=pun>:</span><span class=pln> </span><span class=kwd>self</span><span class=pun>.</span><span class=pln>title</span><span class=pun>}</span><span class=pln> </span><span class=kwd>if</span><span class=pln> </span><span class=kwd>self</span><span class=pun>.</span><span class=pln>title </span><span class=kwd>else</span><span class=pln> </span><span class=pun>{}</span><span class=pln>
+    formatter </span><span class=pun>=</span><span class=pln> </span><span class=typ>HtmlFormatter</span><span class=pun>(</span><span class=pln>style</span><span class=pun>=</span><span class=kwd>self</span><span class=pun>.</span><span class=pln>style</span><span class=pun>,</span><span class=pln> linenos</span><span class=pun>=</span><span class=pln>linenos</span><span class=pun>,</span><span class=pln>
+                              full</span><span class=pun>=</span><span class=kwd>True</span><span class=pun>,</span><span class=pln> </span><span class=pun>**</span><span class=pln>options</span><span class=pun>)</span><span class=pln>
+    </span><span class=kwd>self</span><span class=pun>.</span><span class=pln>highlighted </span><span class=pun>=</span><span class=pln> highlight</span><span class=pun>(</span><span class=kwd>self</span><span class=pun>.</span><span class=pln>code</span><span class=pun>,</span><span class=pln> lexer</span><span class=pun>,</span><span class=pln> formatter</span><span class=pun>)</span><span class=pln>
+    </span><span class=kwd>super</span><span class=pun>().</span><span class=pln>save</span><span class=pun>(*</span><span class=pln>args</span><span class=pun>,</span><span class=pln> </span><span class=pun>**</span><span class=pln>kwargs</span><span class=pun>)</span></code></pre>
+<p>When that's all done we'll need to update our database tables.
+Normally we'd create a database migration in order to do that, but for the purposes of this tutorial, let's just delete the database and start again.</p>
+<pre class="prettyprint well"><code><span class=pln>rm </span><span class=pun>-</span><span class=pln>f db</span><span class=pun>.</span><span class=pln>sqlite3
+rm </span><span class=pun>-</span><span class=pln>r snippets</span><span class=pun>/</span><span class=pln>migrations
+python manage</span><span class=pun>.</span><span class=pln>py makemigrations snippets
+python manage</span><span class=pun>.</span><span class=pln>py migrate</span></code></pre>
+<p>You might also want to create a few different users, to use for testing the API. The quickest way to do this will be with the <code>createsuperuser</code> command.</p>
+<pre class="prettyprint well"><code><span class=pln>python manage</span><span class=pun>.</span><span class=pln>py createsuperuser</span></code></pre>
+<h2 id=adding-endpoints-for-our-user-models><a class=toclink href=#adding-endpoints-for-our-user-models>Adding endpoints for our User models</a></h2>
+<p>Now that we've got some users to work with, we'd better add representations of those users to our API. Creating a new serializer is easy. In <code>serializers.py</code> add:</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> django</span><span class=pun>.</span><span class=pln>contrib</span><span class=pun>.</span><span class=pln>auth</span><span class=pun>.</span><span class=pln>models </span><span class=kwd>import</span><span class=pln> </span><span class=typ>User</span><span class=pln>
+
+</span><span class=kwd>class</span><span class=pln> </span><span class=typ>UserSerializer</span><span class=pun>(</span><span class=pln>serializers</span><span class=pun>.</span><span class=typ>ModelSerializer</span><span class=pun>):</span><span class=pln>
+    snippets </span><span class=pun>=</span><span class=pln> serializers</span><span class=pun>.</span><span class=typ>PrimaryKeyRelatedField</span><span class=pun>(</span><span class=pln>many</span><span class=pun>=</span><span class=kwd>True</span><span class=pun>,</span><span class=pln> queryset</span><span class=pun>=</span><span class=typ>Snippet</span><span class=pun>.</span><span class=pln>objects</span><span class=pun>.</span><span class=pln>all</span><span class=pun>())</span><span class=pln>
+
+    </span><span class=kwd>class</span><span class=pln> </span><span class=typ>Meta</span><span class=pun>:</span><span class=pln>
+        model </span><span class=pun>=</span><span class=pln> </span><span class=typ>User</span><span class=pln>
+        fields </span><span class=pun>=</span><span class=pln> </span><span class=pun>[</span><span class=str>'id'</span><span class=pun>,</span><span class=pln> </span><span class=str>'username'</span><span class=pun>,</span><span class=pln> </span><span class=str>'snippets'</span><span class=pun>]</span></code></pre>
+<p>Because <code>'snippets'</code> is a <em>reverse</em> relationship on the User model, it will not be included by default when using the <code>ModelSerializer</code> class, so we needed to add an explicit field for it.</p>
+<p>We'll also add a couple of views to <code>views.py</code>. We'd like to just use read-only views for the user representations, so we'll use the <code>ListAPIView</code> and <code>RetrieveAPIView</code> generic class-based views.</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> django</span><span class=pun>.</span><span class=pln>contrib</span><span class=pun>.</span><span class=pln>auth</span><span class=pun>.</span><span class=pln>models </span><span class=kwd>import</span><span class=pln> </span><span class=typ>User</span><span class=pln>
+
+
+</span><span class=kwd>class</span><span class=pln> </span><span class=typ>UserList</span><span class=pun>(</span><span class=pln>generics</span><span class=pun>.</span><span class=typ>ListAPIView</span><span class=pun>):</span><span class=pln>
+    queryset </span><span class=pun>=</span><span class=pln> </span><span class=typ>User</span><span class=pun>.</span><span class=pln>objects</span><span class=pun>.</span><span class=pln>all</span><span class=pun>()</span><span class=pln>
+    serializer_class </span><span class=pun>=</span><span class=pln> </span><span class=typ>UserSerializer</span><span class=pln>
+
+
+</span><span class=kwd>class</span><span class=pln> </span><span class=typ>UserDetail</span><span class=pun>(</span><span class=pln>generics</span><span class=pun>.</span><span class=typ>RetrieveAPIView</span><span class=pun>):</span><span class=pln>
+    queryset </span><span class=pun>=</span><span class=pln> </span><span class=typ>User</span><span class=pun>.</span><span class=pln>objects</span><span class=pun>.</span><span class=pln>all</span><span class=pun>()</span><span class=pln>
+    serializer_class </span><span class=pun>=</span><span class=pln> </span><span class=typ>UserSerializer</span></code></pre>
+<p>Make sure to also import the <code>UserSerializer</code> class</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> snippets</span><span class=pun>.</span><span class=pln>serializers </span><span class=kwd>import</span><span class=pln> </span><span class=typ>UserSerializer</span></code></pre>
+<p>Finally we need to add those views into the API, by referencing them from the URL conf. Add the following to the patterns in <code>snippets/urls.py</code>.</p>
+<pre class="prettyprint well"><code><span class=pln>path</span><span class=pun>(</span><span class=str>'users/'</span><span class=pun>,</span><span class=pln> views</span><span class=pun>.</span><span class=typ>UserList</span><span class=pun>.</span><span class=pln>as_view</span><span class=pun>()),</span><span class=pln>
+path</span><span class=pun>(</span><span class=str>'users/&lt;int:pk&gt;/'</span><span class=pun>,</span><span class=pln> views</span><span class=pun>.</span><span class=typ>UserDetail</span><span class=pun>.</span><span class=pln>as_view</span><span class=pun>()),</span></code></pre>
+<h2 id=associating-snippets-with-users><a class=toclink href=#associating-snippets-with-users>Associating Snippets with Users</a></h2>
+<p>Right now, if we created a code snippet, there'd be no way of associating the user that created the snippet, with the snippet instance. The user isn't sent as part of the serialized representation, but is instead a property of the incoming request.</p>
+<p>The way we deal with that is by overriding a <code>.perform_create()</code> method on our snippet views, that allows us to modify how the instance save is managed, and handle any information that is implicit in the incoming request or requested URL.</p>
+<p>On the <code>SnippetList</code> view class, add the following method:</p>
+<pre class="prettyprint well"><code><span class=kwd>def</span><span class=pln> perform_create</span><span class=pun>(</span><span class=kwd>self</span><span class=pun>,</span><span class=pln> serializer</span><span class=pun>):</span><span class=pln>
+    serializer</span><span class=pun>.</span><span class=pln>save</span><span class=pun>(</span><span class=pln>owner</span><span class=pun>=</span><span class=kwd>self</span><span class=pun>.</span><span class=pln>request</span><span class=pun>.</span><span class=pln>user</span><span class=pun>)</span></code></pre>
+<p>The <code>create()</code> method of our serializer will now be passed an additional <code>'owner'</code> field, along with the validated data from the request.</p>
+<h2 id=updating-our-serializer><a class=toclink href=#updating-our-serializer>Updating our serializer</a></h2>
+<p>Now that snippets are associated with the user that created them, let's update our <code>SnippetSerializer</code> to reflect that. Add the following field to the serializer definition in <code>serializers.py</code>:</p>
+<pre class="prettyprint well"><code><span class=pln>owner </span><span class=pun>=</span><span class=pln> serializers</span><span class=pun>.</span><span class=typ>ReadOnlyField</span><span class=pun>(</span><span class=pln>source</span><span class=pun>=</span><span class=str>'owner.username'</span><span class=pun>)</span></code></pre>
+<p><strong>Note</strong>: Make sure you also add <code>'owner',</code> to the list of fields in the inner <code>Meta</code> class.</p>
+<p>This field is doing something quite interesting. The <code>source</code> argument controls which attribute is used to populate a field, and can point at any attribute on the serialized instance. It can also take the dotted notation shown above, in which case it will traverse the given attributes, in a similar way as it is used with Django's template language.</p>
+<p>The field we've added is the untyped <code>ReadOnlyField</code> class, in contrast to the other typed fields, such as <code>CharField</code>, <code>BooleanField</code> etc... The untyped <code>ReadOnlyField</code> is always read-only, and will be used for serialized representations, but will not be used for updating model instances when they are deserialized. We could have also used <code>CharField(read_only=True)</code> here.</p>
+<h2 id=adding-required-permissions-to-views><a class=toclink href=#adding-required-permissions-to-views>Adding required permissions to views</a></h2>
+<p>Now that code snippets are associated with users, we want to make sure that only authenticated users are able to create, update and delete code snippets.</p>
+<p>REST framework includes a number of permission classes that we can use to restrict who can access a given view. In this case the one we're looking for is <code>IsAuthenticatedOrReadOnly</code>, which will ensure that authenticated requests get read-write access, and unauthenticated requests get read-only access.</p>
+<p>First add the following import in the views module</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> rest_framework </span><span class=kwd>import</span><span class=pln> permissions</span></code></pre>
+<p>Then, add the following property to <strong>both</strong> the <code>SnippetList</code> and <code>SnippetDetail</code> view classes.</p>
+<pre class="prettyprint well"><code><span class=pln>permission_classes </span><span class=pun>=</span><span class=pln> </span><span class=pun>[</span><span class=pln>permissions</span><span class=pun>.</span><span class=typ>IsAuthenticatedOrReadOnly</span><span class=pun>]</span></code></pre>
+<h2 id=adding-login-to-the-browsable-api><a class=toclink href=#adding-login-to-the-browsable-api>Adding login to the Browsable API</a></h2>
+<p>If you open a browser and navigate to the browsable API at the moment, you'll find that you're no longer able to create new code snippets. In order to do so we'd need to be able to login as a user.</p>
+<p>We can add a login view for use with the browsable API, by editing the URLconf in our project-level <code>urls.py</code> file.</p>
+<p>Add the following import at the top of the file:</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> django</span><span class=pun>.</span><span class=pln>urls </span><span class=kwd>import</span><span class=pln> path</span><span class=pun>,</span><span class=pln> include</span></code></pre>
+<p>And, at the end of the file, add a pattern to include the login and logout views for the browsable API.</p>
+<pre class="prettyprint well"><code><span class=pln>urlpatterns </span><span class=pun>+=</span><span class=pln> </span><span class=pun>[</span><span class=pln>
+    path</span><span class=pun>(</span><span class=str>'api-auth/'</span><span class=pun>,</span><span class=pln> include</span><span class=pun>(</span><span class=str>'rest_framework.urls'</span><span class=pun>)),</span><span class=pln>
+</span><span class=pun>]</span></code></pre>
+<p>The <code>'api-auth/'</code> part of pattern can actually be whatever URL you want to use.</p>
+<p>Now if you open up the browser again and refresh the page you'll see a 'Login' link in the top right of the page. If you log in as one of the users you created earlier, you'll be able to create code snippets again.</p>
+<p>Once you've created a few code snippets, navigate to the '/users/' endpoint, and notice that the representation includes a list of the snippet ids that are associated with each user, in each user's 'snippets' field.</p>
+<h2 id=object-level-permissions><a class=toclink href=#object-level-permissions>Object level permissions</a></h2>
+<p>Really we'd like all code snippets to be visible to anyone, but also make sure that only the user that created a code snippet is able to update or delete it.</p>
+<p>To do that we're going to need to create a custom permission.</p>
+<p>In the snippets app, create a new file, <code>permissions.py</code></p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> rest_framework </span><span class=kwd>import</span><span class=pln> permissions
+
+
+</span><span class=kwd>class</span><span class=pln> </span><span class=typ>IsOwnerOrReadOnly</span><span class=pun>(</span><span class=pln>permissions</span><span class=pun>.</span><span class=typ>BasePermission</span><span class=pun>):</span><span class=pln>
+    </span><span class=str>"""
+    Custom permission to only allow owners of an object to edit it.
+    """</span><span class=pln>
+
+    </span><span class=kwd>def</span><span class=pln> has_object_permission</span><span class=pun>(</span><span class=kwd>self</span><span class=pun>,</span><span class=pln> request</span><span class=pun>,</span><span class=pln> view</span><span class=pun>,</span><span class=pln> obj</span><span class=pun>):</span><span class=pln>
+        </span><span class=com># Read permissions are allowed to any request,</span><span class=pln>
+        </span><span class=com># so we'll always allow GET, HEAD or OPTIONS requests.</span><span class=pln>
+        </span><span class=kwd>if</span><span class=pln> request</span><span class=pun>.</span><span class=pln>method </span><span class=kwd>in</span><span class=pln> permissions</span><span class=pun>.</span><span class=pln>SAFE_METHODS</span><span class=pun>:</span><span class=pln>
+            </span><span class=kwd>return</span><span class=pln> </span><span class=kwd>True</span><span class=pln>
+
+        </span><span class=com># Write permissions are only allowed to the owner of the snippet.</span><span class=pln>
+        </span><span class=kwd>return</span><span class=pln> obj</span><span class=pun>.</span><span class=pln>owner </span><span class=pun>==</span><span class=pln> request</span><span class=pun>.</span><span class=pln>user</span></code></pre>
+<p>Now we can add that custom permission to our snippet instance endpoint, by editing the <code>permission_classes</code> property on the <code>SnippetDetail</code> view class:</p>
+<pre class="prettyprint well"><code><span class=pln>permission_classes </span><span class=pun>=</span><span class=pln> </span><span class=pun>[</span><span class=pln>permissions</span><span class=pun>.</span><span class=typ>IsAuthenticatedOrReadOnly</span><span class=pun>,</span><span class=pln>
+                      </span><span class=typ>IsOwnerOrReadOnly</span><span class=pun>]</span></code></pre>
+<p>Make sure to also import the <code>IsOwnerOrReadOnly</code> class.</p>
+<pre class="prettyprint well"><code><span class=kwd>from</span><span class=pln> snippets</span><span class=pun>.</span><span class=pln>permissions </span><span class=kwd>import</span><span class=pln> </span><span class=typ>IsOwnerOrReadOnly</span></code></pre>
+<p>Now, if you open a browser again, you find that the 'DELETE' and 'PUT' actions only appear on a snippet instance endpoint if you're logged in as the same user that created the code snippet.</p>
+<h2 id=authenticating-with-the-api><a class=toclink href=#authenticating-with-the-api>Authenticating with the API</a></h2>
+<p>Because we now have a set of permissions on the API, we need to authenticate our requests to it if we want to edit any snippets. We haven't set up any <a href=https://www.django-rest-framework.org/api-guide/authentication/>authentication classes</a>, so the defaults are currently applied, which are <code>SessionAuthentication</code> and <code>BasicAuthentication</code>.</p>
+<p>When we interact with the API through the web browser, we can login, and the browser session will then provide the required authentication for the requests.</p>
+<p>If we're interacting with the API programmatically we need to explicitly provide the authentication credentials on each request.</p>
+<p>If we try to create a snippet without authenticating, we'll get an error:</p>
+<pre class="prettyprint well"><code><span class=pln>http POST http</span><span class=pun>:</span><span class=com>//127.0.0.1:8000/snippets/ code="print(123)"</span><span class=pln>
+
+</span><span class=pun>{</span><span class=pln>
+    </span><span class=str>"detail"</span><span class=pun>:</span><span class=pln> </span><span class=str>"Authentication credentials were not provided."</span><span class=pln>
+</span><span class=pun>}</span></code></pre>
+<p>We can make a successful request by including the username and password of one of the users we created earlier.</p>
+<pre class="prettyprint well"><code><span class=pln>http </span><span class=pun>-</span><span class=pln>a admin</span><span class=pun>:</span><span class=pln>password123 POST http</span><span class=pun>:</span><span class=com>//127.0.0.1:8000/snippets/ code="print(789)"</span><span class=pln>
+
+</span><span class=pun>{</span><span class=pln>
+    </span><span class=str>"id"</span><span class=pun>:</span><span class=pln> </span><span class=lit>1</span><span class=pun>,</span><span class=pln>
+    </span><span class=str>"owner"</span><span class=pun>:</span><span class=pln> </span><span class=str>"admin"</span><span class=pun>,</span><span class=pln>
+    </span><span class=str>"title"</span><span class=pun>:</span><span class=pln> </span><span class=str>"foo"</span><span class=pun>,</span><span class=pln>
+    </span><span class=str>"code"</span><span class=pun>:</span><span class=pln> </span><span class=str>"print(789)"</span><span class=pun>,</span><span class=pln>
+    </span><span class=str>"linenos"</span><span class=pun>:</span><span class=pln> </span><span class=kwd>false</span><span class=pun>,</span><span class=pln>
+    </span><span class=str>"language"</span><span class=pun>:</span><span class=pln> </span><span class=str>"python"</span><span class=pun>,</span><span class=pln>
+    </span><span class=str>"style"</span><span class=pun>:</span><span class=pln> </span><span class=str>"friendly"</span><span class=pln>
+</span><span class=pun>}</span></code></pre>
+<h2 id=summary><a class=toclink href=#summary>Summary</a></h2>
+<p>We've now got a fairly fine-grained set of permissions on our Web API, and end points for users of the system and for the code snippets that they have created.</p>
+<p>In <a href=https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/>part 5</a> of the tutorial we'll look at how we can tie everything together by creating an HTML endpoint for our highlighted snippets, and improve the cohesion of our API by using hyperlinking for the relationships within the system.</p>
+ 
+ </div> 
+ </div> 
+ </div> 
+ </div> 
+ <div id=push></div>
+ </div> 
+ <footer class=span12>
+ <p>Documentation built with <a href=http://www.mkdocs.org/>MkDocs</a>.
+ </p>
+ </footer>
+ 
+ 
+ 
+ <style class=sf-hidden>html:before{z-index:-2147483646}html:before{background:rgba(255,0,0,1);opacity:0.75;transition:opacity 0.85s ease-out;position:fixed;content:"";z-index:2147483647;top:0;left:0;height:2px}</style>
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
