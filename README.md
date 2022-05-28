@@ -11,6 +11,13 @@ This README provides the log what I've done with this repository. This repositor
   - [4. Create an App inside the project](#4-create-an-app-inside-the-project)
   - [5. Migrate your database for the first time](#5-migrate-your-database-for-the-first-time)
   - [6. Create an initial user](#6-create-an-initial-user)
+- [Reconfigure the project](#reconfigure-the-project)
+  - [1. Create Virtual Environment](#1-create-virtual-environment)
+  - [2. Install The Packages in `requirement.txt`](#2-install-the-packages-in-requirementtxt)
+  - [3. Start The Development by Creating a New App](#3-start-the-development-by-creating-a-new-app)
+  - [4. Register the Packages and the Applications](#4-register-the-packages-and-the-applications)
+  - [5. Migrate the Database](#5-migrate-the-database)
+  - [6. Create a New Initial User](#6-create-a-new-initial-user)
 - [Models and Migrations](#models-and-migrations)
 - [Serializer Class](#serializer-class)
 - [Model Serializer](#model-serializer)
@@ -71,6 +78,34 @@ python3 manage.py migrate
 ```
 
 ### 6. Create an initial user
+```bash
+python3 manage.py createsuperuser --email admin@example.com --username admin
+```
+
+## Reconfigure the project
+If you have clone a djangorestframework project, and want to continue the development. You can do these initial steps instead:
+### 1. Create Virtual Environment
+Let's start this learn by creating your virtual environment (venv). Please refer to this link to see how to make it: https://gist.github.com/ryumada/c22133988fd1c22a66e4ed1b23eca233
+
+### 2. Install The Packages in `requirement.txt`
+```bash
+pip install -r requirement.txt
+```
+
+### 3. Start The Development by Creating a New App
+```bash
+django-admin startapp app-name
+```
+
+### 4. Register the Packages and the Applications
+Register the package you want to use and the application you've created on `settings.py` inside the `_main` directory. Then find the `INSTALLED_APPS` variable and insert the package name as the value.
+
+### 5. Migrate the Database
+```bash
+python3 manage.py migrate
+```
+
+### 6. Create a New Initial User
 ```bash
 python3 manage.py createsuperuser --email admin@example.com --username admin
 ```
